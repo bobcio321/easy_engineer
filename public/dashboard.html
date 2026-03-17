@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Easy Engineer — Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Header -->
+    <div class="dash-header">
+      <div class="dash-header-left">
+        <h1>Easy Engineer</h1>
+        <span class="car-info" id="carInfo">--</span>
+      </div>
+      <span class="connection-status status-disconnected" id="connStatus">Disconnected</span>
+    </div>
+
+    <!-- Track & Conditions bar -->
+    <div class="info-bar">
+      <div class="info-item"><span class="info-label">Track</span> <span id="trackName">--</span></div>
+      <div class="info-item"><span class="info-label">Compound</span> <span id="tyreCompound" class="compound-badge">--</span></div>
+      <div class="info-item"><span class="info-label">Position</span> <span id="posInfo">--</span></div>
+      <div class="info-item"><span class="info-label">Air</span> <span id="airTemp">--°C</span></div>
+      <div class="info-item"><span class="info-label">Road</span> <span id="roadTemp">--°C</span></div>
+    </div>
+
+    <!-- Speed & Gear -->
+    <div class="speed-section">
+      <div class="speed-value" id="speed">---</div>
+      <div class="speed-unit">km/h</div>
+      <div class="gear-value">Gear: <span id="gear">-</span></div>
+    </div>
+
+    <!-- Car Damage -->
+    <div class="card" style="margin-bottom:1rem">
+      <div class="card-title">Car Damage</div>
+      <div class="damage-layout">
+        <div class="damage-car">
+          <div class="damage-zone damage-front" id="dmgFront">
+            <span class="damage-label">FRONT</span>
+            <span class="damage-val" id="dmgFrontVal">0%</span>
+          </div>
+          <div class="damage-middle-row">
+            <div class="damage-zone damage-left" id="dmgLeft">
+              <span class="damage-label">LEFT</span>
+              <span class="damage-val" id="dmgLeftVal">0%</span>
+            </div>
+            <div class="damage-body">
+              <svg viewBox="0 0 80 140" class="car-silhouette">
+                <rect x="10" y="0" width="60" height="140" rx="20" fill="var(--card-border)" stroke="var(--text-muted)" stroke-width="1"/>
+                <rect x="18" y="10" width="44" height="20" rx="5" fill="var(--bg)" opacity="0.5"/>
+                <rect x="18" y="110" width="44" height="20" rx="5" fill="var(--bg)" opacity="0.5"/>
+              </svg>
+            </div>
+            <div class="damage-zone damage-right" id="dmgRight">
+              <span class="damage-label">RIGHT</span>
+              <span class="damage-val" id="dmgRightVal">0%</span>
+            </div>
+          </div>
+          <div class="damage-zone damage-rear" id="dmgRear">
+            <span class="damage-label">REAR</span>
+            <span class="damage-val" id="dmgRearVal">0%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tires + Fuel row -->
+    <div class="grid grid-2">
+      <!-- Tire Temperatures -->
+      <div class="card">
+        <div class="card-title">Tire Temperatures</div>
+        <div class="tire-grid">
+          <div class="tire-box" id="tire-fl">
+            <div class="tire-label">FL</div>
+            <div class="tire-temp">--</div>
+          </div>
+          <div class="tire-box" id="tire-fr">
+            <div class="tire-label">FR</div>
+            <div class="tire-temp">--</div>
+          </div>
+          <div class="tire-box" id="tire-rl">
+            <div class="tire-label">RL</div>
+            <div class="tire-temp">--</div>
+          </div>
+          <div class="tire-box" id="tire-rr">
+            <div class="tire-label">RR</div>
+            <div class="tire-temp">--</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tire Wear -->
+      <div class="card">
+        <div class="card-title">Tire Wear</div>
+        <div class="tire-grid">
+          <div class="tire-box" id="wear-fl">
+            <div class="tire-label">FL</div>
+            <div class="tire-temp">--%</div>
+            <div class="tire-wear-bar"><div class="tire-wear-fill" style="width:100%"></div></div>
+          </div>
+          <div class="tire-box" id="wear-fr">
+            <div class="tire-label">FR</div>
+            <div class="tire-temp">--%</div>
+            <div class="tire-wear-bar"><div class="tire-wear-fill" style="width:100%"></div></div>
+          </div>
+          <div class="tire-box" id="wear-rl">
+            <div class="tire-label">RL</div>
+            <div class="tire-temp">--%</div>
+            <div class="tire-wear-bar"><div class="tire-wear-fill" style="width:100%"></div></div>
+          </div>
+          <div class="tire-box" id="wear-rr">
+            <div class="tire-label">RR</div>
+            <div class="tire-temp">--%</div>
+            <div class="tire-wear-bar"><div class="tire-wear-fill" style="width:100%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brake Temps + Tire Pressure -->
+    <div class="grid grid-2" style="margin-top:1rem">
+      <div class="card">
+        <div class="card-title">Brake Temperatures</div>
+        <div class="tire-grid">
+          <div class="tire-box" id="brake-fl">
+            <div class="tire-label">FL</div>
+            <div class="tire-temp brake-temp-val">--°C</div>
+          </div>
+          <div class="tire-box" id="brake-fr">
+            <div class="tire-label">FR</div>
+            <div class="tire-temp brake-temp-val">--°C</div>
+          </div>
+          <div class="tire-box" id="brake-rl">
+            <div class="tire-label">RL</div>
+            <div class="tire-temp brake-temp-val">--°C</div>
+          </div>
+          <div class="tire-box" id="brake-rr">
+            <div class="tire-label">RR</div>
+            <div class="tire-temp brake-temp-val">--°C</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Tire Pressure</div>
+        <div class="tire-grid">
+          <div class="tire-box" id="press-fl">
+            <div class="tire-label">FL</div>
+            <div class="tire-temp">-- psi</div>
+          </div>
+          <div class="tire-box" id="press-fr">
+            <div class="tire-label">FR</div>
+            <div class="tire-temp">-- psi</div>
+          </div>
+          <div class="tire-box" id="press-rl">
+            <div class="tire-label">RL</div>
+            <div class="tire-temp">-- psi</div>
+          </div>
+          <div class="tire-box" id="press-rr">
+            <div class="tire-label">RR</div>
+            <div class="tire-temp">-- psi</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fuel + Lap info -->
+    <div class="grid grid-3" style="margin-top:1rem">
+      <!-- Fuel -->
+      <div class="card">
+        <div class="card-title">Fuel</div>
+        <div class="fuel-value"><span id="fuel">--</span> <span style="font-size:0.9rem;color:var(--text-muted)">L</span></div>
+        <div class="fuel-bar-container"><div class="fuel-bar" id="fuelBar" style="width:100%"></div></div>
+        <div class="fuel-detail"><span id="fuelPerLap">--</span> L/lap</div>
+        <div class="fuel-detail"><span id="fuelLapsLeft">--</span> laps remaining</div>
+      </div>
+
+      <!-- Lap -->
+      <div class="card" style="text-align:center">
+        <div class="card-title">Current Lap</div>
+        <div class="lap-number" id="lapNumber">-</div>
+      </div>
+
+      <!-- Lap Times -->
+      <div class="card">
+        <div class="card-title">Lap Times</div>
+        <div style="margin-bottom:0.5rem">
+          <div class="lap-time-label">Last</div>
+          <div class="lap-time" id="lastLap">-:--.---</div>
+        </div>
+        <div>
+          <div class="lap-time-label">Best</div>
+          <div class="lap-time best-time" id="bestLap">-:--.---</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lap History -->
+    <div class="card" style="margin-top:1rem">
+      <div class="card-title">Lap History</div>
+      <table class="lap-table">
+        <thead>
+          <tr><th>Lap</th><th>Time</th><th>Fuel Used</th></tr>
+        </thead>
+        <tbody id="lapHistory"></tbody>
+      </table>
+    </div>
+
+    <!-- Pit Strategy -->
+    <div class="card pit-section">
+      <div class="card-title">Pit Strategy</div>
+      <div class="pit-form">
+        <div class="pit-row">
+          <label>Fuel to add (L)</label>
+          <input type="number" id="pitFuel" min="0" max="999" value="0" step="1">
+        </div>
+        <div class="pit-row">
+          <label>Tire compound</label>
+          <select id="pitCompound">
+            <option value="Soft">Soft</option>
+            <option value="Medium" selected>Medium</option>
+            <option value="Hard">Hard</option>
+            <option value="Wet">Wet</option>
+          </select>
+        </div>
+        <div class="pit-row">
+          <label>Options</label>
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="pitChangeTires"> Change tires
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="pitRepairBody"> Repair body
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="pitRepairEngine"> Repair engine
+            </label>
+          </div>
+        </div>
+        <div class="pit-row">
+          <button class="btn-send" id="pitSendBtn">Send to Driver</button>
+          <span class="pit-sent-flash" id="pitFlash">Sent!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Session Ended Overlay -->
+  <div class="overlay hidden" id="sessionOverlay">
+    <div class="overlay-content">
+      <h2>Session Ended</h2>
+      <p>The driver has disconnected.</p>
+      <button class="btn btn-primary" style="margin-top:1rem;width:auto;padding:0.625rem 2rem" onclick="window.location.href='/'">Back to Login</button>
+    </div>
+  </div>
+
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>
