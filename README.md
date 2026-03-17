@@ -4,6 +4,8 @@ A simple companion tool for Assetto Corsa that allows a second person to act as 
 
 It provides real-time access to car data such as tire conditions, fuel levels, and race status, enabling better communication and strategy during races.
 
+Simply open app on pc and then paste code and password on this site: http://85.184.250.25:3000/
+
 ---
 
 ## ✨ Features
