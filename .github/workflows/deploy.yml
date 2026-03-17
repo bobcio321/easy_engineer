@@ -1,0 +1,60 @@
+name: Deploy
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install server dependencies
+        working-directory: server
+        run: npm ci --omit=dev
+
+      - name: Build deploy package
+        run: |
+          mkdir -p deploy/server
+          mkdir -p deploy/public
+
+          # Copy server files
+          cp server/server.js          deploy/server/
+          cp server/sessionManager.js  deploy/server/
+          cp server/wsHandler.js       deploy/server/
+          cp server/package.json       deploy/server/
+          cp server/package-lock.json  deploy/server/
+          cp server/.env.example       deploy/server/
+          cp -r server/node_modules    deploy/server/
+
+          # Copy public frontend
+          cp -r public/. deploy/public/
+
+          # Copy start scripts
+          cp server/templates/start.bat deploy/start.bat
+          cp server/templates/start.sh  deploy/start.sh
+          chmod +x deploy/start.sh
+
+      - name: Create release archive
+        run: |
+          cd deploy
+          zip -r ../easy-engineer-${{ github.ref_name }}.zip .
+          cd ..
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Easy Engineer ${{ github.ref_name }}
+          files: easy-engineer-${{ github.ref_name }}.zip
+          generate_release_notes: true
