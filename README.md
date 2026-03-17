@@ -25,6 +25,15 @@ The goal of this project is to enhance the racing experience by introducing a **
 
 ## 🚧 Status
 
-Work in progress 🚀
+✅ Working:  
+- car speed  
+- gears  
+- tire temperatures  
+- tire wear and damage  
+- fuel level  
+
+🚀 Planned:  
+- full pit stop synchronization in-game via the web panel  
+- further improvements to telemetry and driver ↔ engineer interaction
 
 ---
