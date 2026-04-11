@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Easy Engineer - Driver Simulator</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: #fff;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .status-connected { background: #4caf50; }
+    .status-disconnected { background: #f44336; }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 5px;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      font-size: 14px;
+    }
+
+    input::placeholder {
+      color: rgba(255,255,255,0.5);
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #4caf50;
+      box-shadow: 0 0 5px rgba(76,175,80,0.5);
+    }
+
+    button {
+      background: #4caf50;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: background 0.3s;
+      width: 100%;
+    }
+
+    button:hover {
+      background: #45a049;
+    }
+
+    button:disabled {
+      background: #cccccc;
+      cursor: not-allowed;
+    }
+
+    .button-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .info-box {
+      background: rgba(76,175,80,0.2);
+      border-left: 4px solid #4caf50;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 15px 0;
+      font-size: 14px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .telemetry-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .telemetry-item:last-child {
+      border-bottom: none;
+    }
+
+    .telemetry-label {
+      opacity: 0.7;
+    }
+
+    .telemetry-value {
+      font-weight: bold;
+      color: #4caf50;
+    }
+
+    .pit-summary {
+      background: rgba(33,150,243,0.2);
+      border-left: 4px solid #2196f3;
+      padding: 15px;
+      border-radius: 5px;
+      font-size: 14px;
+      margin: 15px 0;
+    }
+
+    .pit-summary div {
+      margin: 5px 0;
+    }
+
+    .pit-flag {
+      display: inline-block;
+      background: #2196f3;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      margin-right: 5px;
+    }
+
+    .checkbox {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .checkbox input {
+      width: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🏎️ Easy Engineer - Driver Simulator</h1>
+
+    <!-- Connection Status -->
+    <div class="card">
+      <h2>Connection Status</h2>
+      <div style="margin: 15px 0;">
+        <span class="status-badge status-disconnected" id="status">Disconnected</span>
+      </div>
+      <div id="sessionInfo" class="info-box" style="display:none;"></div>
+      <button id="connectBtn" onclick="connect()">Connect to Server</button>
+      <button onclick="disconnect()" style="background: #f44336; margin-top: 10px;">Disconnect</button>
+    </div>
+
+    <!-- Telemetry Input -->
+    <div class="card">
+      <h2>📊 Telemetry (Real-time)</h2>
+      <div class="grid-2">
+        <div class="form-group">
+          <label>Speed (km/h)</label>
+          <input type="number" id="speed" value="0" min="0" max="350" step="1">
+        </div>
+        <div class="form-group">
+          <label>Gear</label>
+          <select id="gear">
+            <option value="0">R (Reverse)</option>
+            <option value="1">N (Neutral)</option>
+            <option value="2">1st</option>
+            <option value="3">2nd</option>
+            <option value="4">3rd</option>
+            <option value="5" selected>4th</option>
+            <option value="6">5th</option>
+            <option value="7">6th</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Fuel (L)</label>
+          <input type="number" id="fuel" value="50" min="0" max="120" step="0.1">
+        </div>
+        <div class="form-group">
+          <label>Tire Temp FL (°C)</label>
+          <input type="number" id="tireTemp" value="85" min="0" max="150" step="1">
+        </div>
+        <div class="form-group">
+          <label>Tire Wear FL (%)</label>
+          <input type="number" id="tireWear" value="50" min="0" max="100" step="1">
+        </div>
+        <div class="form-group">
+          <label>Current Lap</label>
+          <input type="number" id="lap" value="5" min="1" step="1">
+        </div>
+      </div>
+
+      <div class="info-box">
+        💡 Telemetry will be sent automatically every 500ms. You can modify values in real-time.
+      </div>
+
+      <button onclick="startTelemetry()" id="telemetryBtn">Start Sending Telemetry</button>
+      <button onclick="stopTelemetry()" style="background: #f44336;">Stop Telemetry</button>
+    </div>
+
+    <!-- Current Telemetry Display -->
+    <div class="card">
+      <h2>📡 Currently Sending</h2>
+      <div id="telemetryDisplay">
+        <div class="telemetry-item">
+          <span class="telemetry-label">Status:</span>
+          <span class="telemetry-value">Not connected</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pit Strategy from Engineer -->
+    <div class="card">
+      <h2>🔧 Pit Strategy (from Engineer)</h2>
+      <div id="pitStrategyDisplay">
+        <div class="info-box">Waiting for pit strategy from engineer...</div>
+      </div>
+    </div>
+
+    <!-- Pit Stop Control -->
+    <div class="card">
+      <h2>🛑 Send Pit Stop Update</h2>
+      <div class="grid-2">
+        <div class="form-group">
+          <label>Fuel to add (L)</label>
+          <input type="number" id="pitFuel" value="50" min="0" max="999" step="1">
+        </div>
+        <div class="form-group">
+          <label>Tire Compound</label>
+          <select id="pitCompound">
+            <option value="Soft">Soft</option>
+            <option value="Medium" selected>Medium</option>
+            <option value="Hard">Hard</option>
+            <option value="Wet">Wet</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <div class="checkbox form-group">
+          <input type="checkbox" id="pitChangeTires">
+          <label for="pitChangeTires" style="margin: 0;">Change Tires</label>
+        </div>
+        <div class="checkbox form-group">
+          <input type="checkbox" id="pitRepairBody">
+          <label for="pitRepairBody" style="margin: 0;">Repair Body</label>
+        </div>
+        <div class="checkbox form-group">
+          <input type="checkbox" id="pitRepairEngine">
+          <label for="pitRepairEngine" style="margin: 0;">Repair Engine</label>
+        </div>
+      </div>
+
+      <button onclick="sendPitStop()" style="margin-top: 15px;">Send Pit Stop Update</button>
+    </div>
+
+    <!-- Log -->
+    <div class="card">
+      <h2>📋 Event Log</h2>
+      <div id="log" style="
+        max-height: 200px;
+        overflow-y: auto;
+        background: rgba(0,0,0,0.3);
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 12px;
+        font-family: monospace;
+      "></div>
+      <button onclick="document.getElementById('log').innerHTML=''" style="margin-top: 10px; background: #f44336;">Clear Log</button>
+    </div>
+  </div>
+
+  <script src="/js/driver.js"></script>
+  <script>
+    let driverClient = null;
+    let telemetryInterval = null;
+
+    function log(message) {
+      const logEl = document.getElementById('log');
+      const time = new Date().toLocaleTimeString();
+      const entry = document.createElement('div');
+      entry.textContent = `[${time}] ${message}`;
+      logEl.insertBefore(entry, logEl.firstChild);
+      if (logEl.children.length > 50) logEl.removeChild(logEl.lastChild);
+    }
+
+    function updateStatus(connected) {
+      const badge = document.getElementById('status');
+      badge.textContent = connected ? 'Connected' : 'Disconnected';
+      badge.className = 'status-badge ' + (connected ? 'status-connected' : 'status-disconnected');
+    }
+
+    function connect() {
+      driverClient = new DriverClient('AUTO', 'AUTO');
+
+      driverClient.onSessionCreated = (code, password) => {
+        log(`✅ Session created: ${code} / ${password}`);
+        document.getElementById('sessionInfo').innerHTML =
+          `<strong>Share with engineer:</strong><br>Code: <strong>${code}</strong><br>Password: <strong>${password}</strong>`;
+        document.getElementById('sessionInfo').style.display = 'block';
+      };
+
+      driverClient.onConnected = () => {
+        updateStatus(true);
+        log('✅ Connected to server');
+      };
+
+      driverClient.onDisconnected = () => {
+        updateStatus(false);
+        log('❌ Disconnected from server');
+      };
+
+      driverClient.onPitUpdate = (data) => {
+        log('🔧 Pit strategy received from engineer');
+        const html = `
+          <div class="pit-summary">
+            <div><strong>Engineer sent pit strategy:</strong></div>
+            <div>Fuel: <span class="pit-flag">${data.fuel} L</span></div>
+            <div>Compound: <span class="pit-flag">${data.tireCompound}</span></div>
+            ${data.changeTires ? '<div>🔄 <span class="pit-flag">Change Tires</span></div>' : ''}
+            ${data.repairBody ? '<div>🔧 <span class="pit-flag">Repair Body</span></div>' : ''}
+            ${data.repairEngine ? '<div>⚙️ <span class="pit-flag">Repair Engine</span></div>' : ''}
+          </div>
+        `;
+        document.getElementById('pitStrategyDisplay').innerHTML = html;
+      };
+
+      driverClient.onError = (error) => {
+        log(`❌ Error: ${error}`);
+      };
+
+      driverClient.connect();
+    }
+
+    function disconnect() {
+      if (driverClient) {
+        stopTelemetry();
+        driverClient.disconnect();
+        log('Disconnected');
+      }
+    }
+
+    function startTelemetry() {
+      if (!driverClient || !driverClient.connected) {
+        alert('Not connected! Click Connect first.');
+        return;
+      }
+
+      if (telemetryInterval) return;
+
+      telemetryInterval = setInterval(() => {
+        const speed = parseInt(document.getElementById('speed').value);
+        const gear = parseInt(document.getElementById('gear').value);
+        const fuel = parseFloat(document.getElementById('fuel').value) - (Math.random() * 0.02);
+        const tireTemp = parseInt(document.getElementById('tireTemp').value) + (Math.random() * 5 - 2.5);
+        const tireWear = parseInt(document.getElementById('tireWear').value);
+        const lap = parseInt(document.getElementById('lap').value);
+
+        const telemetry = {
+          speed: Math.max(0, speed + (Math.random() * 10 - 5)),
+          gear,
+          fuel: Math.max(0, fuel),
+          maxFuel: 120,
+          lap,
+          lastLap: 125000,
+          bestLap: 120000,
+          fuelPerLap: 2.5,
+          tireTemp: [
+            tireTemp,
+            tireTemp + (Math.random() * 4 - 2),
+            tireTemp - 2 + (Math.random() * 4 - 2),
+            tireTemp - 1 + (Math.random() * 4 - 2)
+          ],
+          tireWear: [tireWear, tireWear + 2, tireWear - 3, tireWear + 1],
+          tirePressure: [27.5, 27.4, 28.1, 28.0],
+          brakeTemp: [450, 460, 440, 450],
+          carModel: 'Ferrari 488 GT3',
+          track: 'Monza',
+          trackConfig: 'GP',
+          position: 1,
+          numberOfLaps: 30,
+          carDamage: [0, 5, 0, 2],
+          airTemp: 25,
+          roadTemp: 35,
+          tyreCompound: 'Soft'
+        };
+
+        driverClient.sendTelemetry(telemetry);
+
+        document.getElementById('telemetryDisplay').innerHTML = `
+          <div class="telemetry-item">
+            <span class="telemetry-label">Speed:</span>
+            <span class="telemetry-value">${Math.round(telemetry.speed)} km/h</span>
+          </div>
+          <div class="telemetry-item">
+            <span class="telemetry-label">Gear:</span>
+            <span class="telemetry-value">${telemetry.gear === 0 ? 'R' : telemetry.gear === 1 ? 'N' : telemetry.gear - 1}</span>
+          </div>
+          <div class="telemetry-item">
+            <span class="telemetry-label">Fuel:</span>
+            <span class="telemetry-value">${telemetry.fuel.toFixed(1)} L</span>
+          </div>
+          <div class="telemetry-item">
+            <span class="telemetry-label">Tire Temp:</span>
+            <span class="telemetry-value">${Math.round(telemetry.tireTemp[0])}°C</span>
+          </div>
+        `;
+      }, 500);
+
+      document.getElementById('telemetryBtn').disabled = true;
+      log('📡 Started sending telemetry');
+    }
+
+    function stopTelemetry() {
+      if (telemetryInterval) {
+        clearInterval(telemetryInterval);
+        telemetryInterval = null;
+        document.getElementById('telemetryBtn').disabled = false;
+        log('⏹️ Stopped sending telemetry');
+      }
+    }
+
+    function sendPitStop() {
+      if (!driverClient || !driverClient.connected) {
+        alert('Not connected!');
+        return;
+      }
+
+      const fuel = parseInt(document.getElementById('pitFuel').value);
+      const compound = document.getElementById('pitCompound').value;
+      const changeTires = document.getElementById('pitChangeTires').checked;
+      const repairBody = document.getElementById('pitRepairBody').checked;
+      const repairEngine = document.getElementById('pitRepairEngine').checked;
+
+      driverClient.sendPitStop(fuel, compound, changeTires, repairBody, repairEngine);
+      log(`🛑 Sent pit stop: ${fuel}L, ${compound}, Tires:${changeTires}, Body:${repairBody}, Engine:${repairEngine}`);
+    }
+
+    window.addEventListener('beforeunload', () => {
+      disconnect();
+    });
+  </script>
+</body>
+</html>

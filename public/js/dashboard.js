@@ -215,12 +215,21 @@ function renderLapHistory() {
   ).join('');
 }
 
-function updatePitStrategy(data) {
+function updatePitStrategy(data, fromDriver = false) {
   pitFuel.value = data.fuel || 0;
   pitCompound.value = data.tireCompound || 'Medium';
   pitChangeTires.checked = !!data.changeTires;
   pitRepairBody.checked = !!data.repairBody;
   pitRepairEngine.checked = !!data.repairEngine;
+
+  if (fromDriver) {
+    pitFlash.classList.add('visible');
+    pitFlash.textContent = 'Driver updated!';
+    setTimeout(() => {
+      pitFlash.classList.remove('visible');
+      pitFlash.textContent = 'Sent!';
+    }, 1500);
+  }
 }
 
 function connect() {
@@ -250,7 +259,11 @@ function connect() {
         break;
 
       case 'pit:strategy':
-        updatePitStrategy(msg.data);
+        updatePitStrategy(msg.data, false);
+        break;
+
+      case 'pit:driver-update':
+        updatePitStrategy(msg.data, true);
         break;
 
       case 'session:ended':

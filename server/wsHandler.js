@@ -24,6 +24,13 @@ function handleDriverConnection(ws) {
         if (eng.readyState === 1) eng.send(payload);
       }
     }
+
+    if (msg.type === 'pit:update') {
+      session.pitStrategy = msg.data;
+      for (const eng of session.engineers) {
+        if (eng.readyState === 1) eng.send(JSON.stringify({ type: 'pit:driver-update', data: msg.data }));
+      }
+    }
   });
 
   ws.on('close', () => {

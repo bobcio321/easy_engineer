@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Szablony stron internetowych - podejrzyj jak wyglądają nasze gotowe szablony dla różnych branż">
+    <title>Szablony - Nimbra</title>
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #0d9488;
+            --accent-light: #14b8a6;
+            --bg-light: #f0f7ff;
+            --bg-white: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #4b5563;
+            --border: #e0e6ed;
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            color: var(--text-dark);
+            background: var(--bg-white);
+            line-height: 1.6;
+        }
+
+        /* NAV */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            text-decoration: none;
+            letter-spacing: -0.8px;
+        }
+
+        .logo span { color: var(--accent); }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover { color: var(--accent); }
+
+        /* HEADER */
+        .demo-header {
+            background: linear-gradient(180deg, var(--bg-white) 0%, var(--bg-light) 100%);
+            padding: 5rem 5% 4rem;
+            text-align: center;
+        }
+
+        .demo-header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        .demo-header p {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* GALLERY */
+        .gallery {
+            padding: 5rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .template-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .template-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent-light);
+        }
+
+        .template-preview {
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(135deg, #f0f7ff 0%, #e0f2fe 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            color: rgba(13, 148, 136, 0.2);
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .template-preview::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(13, 148, 136, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: drift 20s linear infinite;
+        }
+
+        @keyframes drift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(20px, 20px); }
+        }
+
+        .template-content {
+            padding: 2.5rem 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .template-category {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .template-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .template-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            flex: 1;
+            line-height: 1.6;
+        }
+
+        .template-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-tag {
+            font-size: 0.75rem;
+            padding: 0.4rem 0.8rem;
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .template-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--bg-light);
+            color: var(--text-dark);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--primary);
+            color: rgba(255, 255, 255, 0.65);
+            padding: 3rem 5% 2rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.7rem;
+        }
+
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.65);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2.5rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .demo-header h1 {
+                font-size: 2rem;
+            }
+
+            .templates-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .template-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVIGATION -->
+    <nav>
+        <a href="index.html" class="logo">nimb<span>ra</span></a>
+        <ul class="nav-links">
+            <li><a href="index.html#jak-to-dziala">Jak to działa</a></li>
+            <li><a href="index.html#mozliwosci">Możliwości</a></li>
+            <li><a href="index.html#plany">Plany</a></li>
+            <li><a href="#" style="color: var(--accent); font-weight: 600;">Szablony</a></li>
+        </ul>
+    </nav>
+
+    <!-- HEADER -->
+    <section class="demo-header">
+        <h1>Nasze szablony</h1>
+        <p>Wybierz szablon dla swojej branży i dostosuj go w zaledwie kilka minut. Wszystkie szablony są responsywne i zoptymalizowane dla SEO.</p>
+    </section>
+
+    <!-- GALLERY -->
+    <section class="gallery">
+        <div class="templates-grid">
+            <!-- FRYZJER -->
+            <div class="template-card">
+                <div class="template-preview">💇</div>
+                <div class="template-content">
+                    <div class="template-category">Usługi Beauty</div>
+                    <h3 class="template-name">Salon fryzjerski</h3>
+                    <p class="template-desc">Profesjonalna strona dla salonu z galerią, harmonogramem rezerwacji i listą pracowników.</p>
+                    <div class="template-features">
+                        <span class="feature-tag">Rezerwacje online</span>
+                        <span class="feature-tag">Galeria</span>
+                        <span class="feature-tag">Blog</span>
+                    </div>
+                    <div class="template-actions">
+                        <button class="btn btn-secondary">Podejrzyj</button>
+                        <button class="btn btn-primary">Wybierz</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MECHANIK -->
+            <div class="template-card">
+                <div class="template-preview">🔧</div>
+                <div class="template-content">
+                    <div class="template-category">Usługi Naprawa</div>
+                    <h3 class="template-name">Serwis samochodowy</h3>
+                    <p class="template-desc">Strona dla warsztatu z ofertą usług, galerią zrealizowanych prac i systemem rezerwacji.</p>
+                    <div class="template-features">
+                        <span class="feature-tag">Rezerwacje</span>
+                        <span class="feature-tag">Portfolio</span>
+                        <span class="feature-tag">Cennik</span>
+                    </div>
+                    <div class="template-actions">
+                        <button class="btn btn-secondary">Podejrzyj</button>
+                        <button class="btn btn-primary">Wybierz</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOTOGRAF -->
+            <div class="template-card">
+                <div class="template-preview">📷</div>
+                <div class="template-content">
+                    <div class="template-category">Kreatywność</div>
+                    <h3 class="template-name">Studio fotograficzne</h3>
+                    <p class="template-desc">Piękna galeria portfolio z możliwością pokazania swoich najlepszych prac w wysokiej jakości.</p>
+                    <div class="template-features">
+                        <span class="feature-tag">Galeria 4K</span>
+                        <span class="feature-tag">Lightbox</span>
+                        <span class="feature-tag">Kontakt</span>
+                    </div>
+                    <div class="template-actions">
+                        <button class="btn btn-secondary">Podejrzyj</button>
+                        <button class="btn btn-primary">Wybierz</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RESTAURACJA -->
+            <div class="template-card">
+                <div class="template-preview">🍽️</div>
+                <div class="template-content">
+                    <div class="template-category">Gastronomia</div>
+                    <h3 class="template-name">Restauracja</h3>
+                    <p class="template-desc">Strona restauracji z menu online, rezerwacjami stolików i galerią dań.</p>
+                    <div class="template-features">
+                        <span class="feature-tag">Menu online</span>
+                        <span class="feature-tag">Rezerwacje</span>
+                        <span class="feature-tag">Galeria</span>
+                    </div>
+                    <div class="template-actions">
+                        <button class="btn btn-secondary">Podejrzyj</button>
+                        <button class="btn btn-primary">Wybierz</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DENTYSTA -->
+            <div class="template-card">
+                <div class="template-preview">🦷</div>
+                <div class="template-content">
+                    <div class="template-category">Usługi Medyczne</div>
+                    <h3 class="template-name">Gabinet stomatologiczny</h3>
+                    <p class="template-desc">Profesjonalna strona dla dentysty z informacjami o usługach i systemem rezerwacji.</p>
+                    <div class="template-features">
+                        <span class="feature-tag">Rezerwacje online</span>
+                        <span class="feature-tag">O nas</span>
+                        <span class="feature-tag">FAQ</span>
+                    </div>
+                    <div class="template-actions">
+                        <button class="btn btn-secondary">Podejrzyj</button>
+                        <button class="btn btn-primary">Wybierz</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TRENER FITNESS -->
+            <div class="template-card">
+                <div class="template-preview">💪</div>
+                <div class="template-content">
+                    <div class="template-category">Fitness</div>
+                    <h3 class="template-name">Trener fitness</h3>
+                    <p class="template-desc">Strona dla trenera z ofertą treningów, harmonogramem, testimonialami klientów.</p>
+                    <div class="template-features">
+                        <span class="feature-tag">Harmonogram</span>
+                        <span class="feature-tag">Opinie</span>
+                        <span class="feature-tag">Pakiety</span>
+                    </div>
+                    <div class="template-actions">
+                        <button class="btn btn-secondary">Podejrzyj</button>
+                        <button class="btn btn-primary">Wybierz</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AGENT NIERUCHOMOŚCI -->
+            <div class="template-card">
+                <div class="template-preview">🏠</div>
+                <div class="template-content">
+                    <div class="template-category">Nieruchomości</div>
+                    <h3 class="template-name">Pośrednik nieruchomości</h3>
+                    <p class="template-desc">Nowoczesna strona z katalogiem nieruchomości, wyszukiwaniem i formularzem kontaktu.</p>
+                    <div class="template-features">
+                        <span class="feature-tag">Katalog ofert</span>
+                        <span class="feature-tag">Wyszukiwanie</span>
+                        <span class="feature-tag">Mapa</span>
+                    </div>
+                    <div class="template-actions">
+                        <button class="btn btn-secondary">Podejrzyj</button>
+                        <button class="btn btn-primary">Wybierz</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ELEKTRYK -->
+            <div class="template-card">
+                <div class="template-preview">⚡</div>
+                <div class="template-content">
+                    <div class="template-category">Usługi</div>
+                    <h3 class="template-name">Usługi elektryczne</h3>
+                    <p class="template-desc">Profesjonalna strona dla elektryka z portfolio prac i formularzem wyceny.</p>
+                    <div class="template-features">
+                        <span class="feature-tag">Portfolio</span>
+                        <span class="feature-tag">Wycena online</span>
+                        <span class="feature-tag">Opinie</span>
+                    </div>
+                    <div class="template-actions">
+                        <button class="btn btn-secondary">Podejrzyj</button>
+                        <button class="btn btn-primary">Wybierz</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SALON KOSMETYKI -->
+            <div class="template-card">
+                <div class="template-preview">💄</div>
+                <div class="template-content">
+                    <div class="template-category">Beauty</div>
+                    <h3 class="template-name">Salon kosmetyki</h3>
+                    <p class="template-desc">Elegancka strona dla salonu z usługami, cenami, harmonogramem i galerią.</p>
+                    <div class="template-features">
+                        <span class="feature-tag">Rezerwacje</span>
+                        <span class="feature-tag">Cennik</span>
+                        <span class="feature-tag">Galeria</span>
+                    </div>
+                    <div class="template-actions">
+                        <button class="btn btn-secondary">Podejrzyj</button>
+                        <button class="btn btn-primary">Wybierz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Nimbra</h3>
+                <p style="color: rgba(255, 255, 255, 0.65); font-size: 0.9rem;">Profesjonalne strony dla każdej firmy. Bez kodowania, z dużym potencjałem.</p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Produkt</h3>
+                <ul>
+                    <li><a href="index.html">Strona główna</a></li>
+                    <li><a href="index.html#jak-to-dziala">Jak to działa</a></li>
+                    <li><a href="index.html#mozliwosci">Możliwości</a></li>
+                    <li><a href="#">Szablony</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Firma</h3>
+                <ul>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">O nas</a></li>
+                    <li><a href="#">Kariera</a></li>
+                    <li><a href="#">Kontakt</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Dokumentacja</h3>
+                <ul>
+                    <li><a href="#">Centrum pomocy</a></li>
+                    <li><a href="#">Poradniki</a></li>
+                    <li><a href="#">API</a></li>
+                    <li><a href="#">Status</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Prawne</h3>
+                <ul>
+                    <li><a href="#">Regulamin</a></li>
+                    <li><a href="#">Polityka prywatności</a></li>
+                    <li><a href="#">Cookies</a></li>
+                    <li><a href="#">RODO</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 Nimbra. Wszystkie prawa zastrzeżone.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Alert dla przycisków demo (w przyszłości będą to linki do podglądów)
+        document.querySelectorAll('.btn-secondary, .btn-primary').forEach(btn => {
+            btn.addEventListener('click', function() {
+                alert('Funkcja będzie dostępna wkrótce! 🚀');
+            });
+        });
+    </script>
+</body>
+</html>
